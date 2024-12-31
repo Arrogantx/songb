@@ -25,17 +25,10 @@ export function WizardForm({ onGenerate, isGenerating }: WizardFormProps) {
     currentStepData,
   } = useWizard();
 
-  const [showGenerateButton, setShowGenerateButton] = useState(false);
-
   const handleGenerateClick = () => {
-    if (isComplete && !isGenerating && formData.context?.trim()) {
+    if (isComplete && !isGenerating) {
       onGenerate(formData as GenerationParams);
     }
-  };
-
-  const handleContextChange = (value: string) => {
-    handleSelect(value);
-    setShowGenerateButton(!!value.trim());
   };
 
   return (
@@ -52,8 +45,8 @@ export function WizardForm({ onGenerate, isGenerating }: WizardFormProps) {
             key={currentStepData.id}
             step={currentStepData}
             value={formData[currentStepData.id] || ""}
-            onSelect={currentStepData.id === 'context' ? handleContextChange : handleSelect}
-            showGenerateButton={currentStepData.id === 'context' && showGenerateButton}
+            onSelect={handleSelect}
+            showGenerateButton={currentStepData.id === 'context' && !!formData.context?.trim()}
             onGenerate={handleGenerateClick}
             isGenerating={isGenerating}
           />

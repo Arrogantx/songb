@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react';
 import { GenerationParams } from '@/lib/openai/types';
 
 export type WizardStep = {
-  id: string;
+  id: keyof GenerationParams;
   title: string;
   description: string;
   options?: Array<{ value: string; label: string }>;
@@ -14,44 +14,44 @@ export type WizardStep = {
 export const WIZARD_STEPS: WizardStep[] = [
   {
     id: "audience",
-    title: "Select Your Target Audience",
-    description: "Who are you trying to reach with your content?",
+    title: "Who do you want to reach?",
+    description: "Which of these best describes your target audience?",
     type: "select",
     options: [
-      { value: "grassroots", label: "Grassroots Advocates" },
-      { value: "policymakers", label: "Policymakers" },
-      { value: "businesses", label: "Small Businesses" },
-      { value: "general", label: "General Public" },
+      { value: "my-community", label: "My Community" },
+      { value: "politicians", label: "Politicians" },
+      { value: "businesses", label: "Businesses" },
+      { value: "everyone", label: "Everyone" },
     ],
   },
   {
     id: "goal",
-    title: "Define Your Content Goal",
+    title: "What's your primary goal?",
     description: "What do you want to achieve with this content?",
     type: "select",
     options: [
-      { value: "mobilize", label: "Mobilize Action" },
-      { value: "inform", label: "Inform & Educate" },
-      { value: "persuade", label: "Persuade & Convince" },
-      { value: "inspire", label: "Inspire & Motivate" },
+      { value: "motivate-action", label: "Motivate and Take Action" },
+      { value: "announce-inform", label: "Announce or Inform" },
+      { value: "change-minds", label: "Change Minds" },
+      { value: "build-connection", label: "Build Connection" },
     ],
   },
   {
     id: "tone",
-    title: "Choose Your Content Tone",
+    title: "Choose Your Tone",
     description: "What tone best fits your message?",
     type: "select",
     options: [
       { value: "professional", label: "Professional" },
       { value: "casual", label: "Casual & Friendly" },
-      { value: "urgent", label: "Urgent & Compelling" },
-      { value: "inspirational", label: "Inspirational" },
+      { value: "call-to-action", label: "Call to Action" },
+      { value: "emotionally-compelling", label: "Emotionally Compelling" },
     ],
   },
   {
     id: "contentType",
-    title: "Select Content Type",
-    description: "What format should your content take?",
+    title: "What type of content?",
+    description: "Choose all that apply",
     type: "select",
     options: [
       { value: "social", label: "Social Media Post" },
@@ -76,7 +76,6 @@ export function useWizard() {
     const currentStepData = WIZARD_STEPS[currentStep];
     setFormData(prev => ({ ...prev, [currentStepData.id]: value }));
 
-    // Only auto-proceed for select-type steps
     if (currentStepData.type === 'select' && currentStep < WIZARD_STEPS.length - 1) {
       setCurrentStep(prev => prev + 1);
     }
@@ -90,8 +89,8 @@ export function useWizard() {
 
   const isFormComplete = (data: Partial<GenerationParams>): boolean => {
     return WIZARD_STEPS.every(step => {
-      const value = data[step.id as keyof GenerationParams];
-      return step.type === 'textarea' ? true : !!value;
+      const value = data[step.id];
+      return value && value.trim().length > 0;
     });
   };
 

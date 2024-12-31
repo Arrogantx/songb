@@ -1,41 +1,46 @@
-"use strict";
-
 export const PROMPT_TEMPLATES = {
   social: {
-    base: `Create a compelling social media post that {goal} for {audience}. Use a {tone} tone that resonates with the target audience.`,
-    examples: [
-      "Join us in making a difference! 🌟 [Call to Action] #Advocacy #Impact",
-      "Breaking: Important update on [Topic]. Here's what you need to know 🔍 #Policy"
+    structure: [
+      "Hook/Opening",
+      "Main Message",
+      "Call to Action",
+      "Relevant Hashtags"
     ]
   },
   email: {
-    base: `Compose an email campaign that {goal} for {audience}. Maintain a {tone} tone throughout the message.`,
     structure: [
       "Subject Line",
-      "Opening Hook",
-      "Main Message",
+      "Opening Greeting",
+      "Main Content",
       "Call to Action",
       "Closing"
     ]
   },
   press: {
-    base: `Write a press release that {goal} targeting {audience}. Use a {tone} tone appropriate for media coverage.`,
     structure: [
       "Headline",
-      "Dateline",
+      "Subheadline",
       "Lead Paragraph",
-      "Body",
-      "Boilerplate",
+      "Key Points",
+      "Supporting Quotes",
+      "Call to Action",
       "Contact Information"
     ]
   },
   blog: {
-    base: `Create a blog post that {goal} for {audience}. Maintain a {tone} tone throughout the article.`,
     structure: [
-      "Attention-Grabbing Title",
+      "Title",
       "Introduction",
       "Main Points",
       "Supporting Evidence",
+      "Conclusion",
+      "Call to Action"
+    ]
+  },
+  default: {
+    structure: [
+      "Introduction",
+      "Main Content",
       "Conclusion",
       "Call to Action"
     ]

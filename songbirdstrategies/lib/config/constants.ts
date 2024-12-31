@@ -14,5 +14,5 @@ export const SUPABASE_CONFIG = {
 export const APP_CONFIG = {
   name: 'Songbird Strategies',
   description: 'Strategic Communications & Advocacy',
-  url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+  url: process.env.NEXT_PUBLIC_APP_URL || 'https://songbirdstrategies.io',
 } as const;

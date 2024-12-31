@@ -7,5 +7,5 @@ exports.contentGenerationSchema = zod_1.z.object({
     goal: zod_1.z.string().min(1, 'Goal is required'),
     tone: zod_1.z.string().min(1, 'Tone is required'),
     contentType: zod_1.z.string().min(1, 'Content type is required'),
-    additionalContext: zod_1.z.string().optional(),
+    context: zod_1.z.string().min(1, 'Context is required'),
 });

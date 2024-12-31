@@ -3,7 +3,7 @@ export interface GenerationParams {
   goal: string;
   tone: string;
   contentType: string;
-  additionalContext?: string;
+  context: string;
 }
 
 export interface GenerationResponse {

@@ -1,4 +1,5 @@
 export interface RateLimit {
+  allowed: boolean;
   remaining: number;
   reset: Date;
   total: number;
@@ -7,7 +8,7 @@ export interface RateLimit {
 export interface RateLimitConfig {
   free: {
     limit: number;
-    interval: number; // in minutes
+    interval: number;
   };
   premium: {
     limit: number;
@@ -18,18 +19,3 @@ export interface RateLimitConfig {
     interval: number;
   };
 }
-
-export const RATE_LIMIT_CONFIG: RateLimitConfig = {
-  free: {
-    limit: 3,
-    interval: 60, // 1 hour
-  },
-  premium: {
-    limit: 10,
-    interval: 60,
-  },
-  enterprise: {
-    limit: 50,
-    interval: 60,
-  },
-} as const;

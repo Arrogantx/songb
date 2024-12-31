@@ -11,25 +11,19 @@ export const runtime = 'edge';
 
 export async function POST(request: Request) {
   try {
-    // Initialize Supabase client
-    const cookieStore = cookies();
-    const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
-    
-    // Get user session
+    const supabase = createRouteHandlerClient({ cookies });
     const { data: { session } } = await supabase.auth.getSession();
     
-    // Check rate limit
     if (session?.user) {
       const isAllowed = await checkRateLimit(session.user.id);
       if (!isAllowed) {
         return NextResponse.json(
-          { error: 'Rate limit exceeded' },
+          { error: 'Rate limit exceeded. Please try again later.' },
           { status: 429 }
         );
       }
     }
 
-    // Parse and validate request body
     let params: GenerationParams;
     try {
       params = await request.json();
@@ -41,7 +35,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Validate parameters
     const validationError = validateGenerationParams(params);
     if (validationError) {
       return NextResponse.json(
@@ -50,21 +43,17 @@ export async function POST(request: Request) {
       );
     }
 
-    // Generate content
     try {
       const content = await ContentService.generateContent(params);
-      
-      // Validate generated content
-      const isValid = await ContentService.validateContent(content);
-      if (!isValid) {
-        throw new Error('Generated content did not pass quality validation');
-      }
 
-      // Save generation if user is logged in
       if (session?.user) {
         await supabase.from('content_generations').insert({
           user_id: session.user.id,
-          ...params,
+          audience: params.audience,
+          goal: params.goal,
+          tone: params.tone,
+          content_type: params.contentType,
+          context: params.context,
           generated_content: content
         });
       }

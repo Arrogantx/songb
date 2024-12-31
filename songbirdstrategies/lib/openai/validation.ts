@@ -6,7 +6,7 @@ export const generationParamsSchema = z.object({
   goal: z.string().min(1, 'Goal is required'),
   tone: z.string().min(1, 'Tone is required'),
   contentType: z.string().min(1, 'Content type is required'),
-  additionalContext: z.string().optional(),
+  context: z.string().min(1, 'Please provide specific details about what you want to communicate'),
 });
 
 export function validateGenerationParams(params: GenerationParams): string | null {
