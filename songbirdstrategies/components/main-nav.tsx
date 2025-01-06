@@ -7,7 +7,6 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { LogIn, LogOut } from "lucide-react";
 import { useSupabase } from "@/lib/supabase/provider";
-import { SongbirdLogo } from "@/components/ui/songbird-logo";
 
 export function MainNav() {
   const router = useRouter();
@@ -26,7 +25,12 @@ export function MainNav() {
     <div className="border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center px-4">
         <Link href="/" className="mr-6 flex items-center space-x-2">
-          <SongbirdLogo />
+          {/* Replace SongbirdLogo with an image */}
+          <img 
+            src="/logo.svg" 
+            alt="Songbird Logo" 
+            className="h-8 w-auto" // Adjust height and width as needed
+          />
           <span className="text-xl font-bold">Songbird</span>
         </Link>
         
