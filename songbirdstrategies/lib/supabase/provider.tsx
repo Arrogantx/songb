@@ -20,31 +20,38 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Check for existing session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
+    try {
+      // Check for existing session
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        setSession(session);
+        setIsLoading(false);
+      });
+
+      // Listen for auth changes
+      const {
+        data: { subscription },
+      } = supabase.auth.onAuthStateChange((_event, session) => {
+        setSession(session);
+        
+        // Handle auth state changes
+        if (session) {
+          if (pathname === '/auth') {
+            router.push('/dashboard');
+          }
+        } else {
+          if (pathname.startsWith('/dashboard')) {
+            router.push('/auth');
+          }
+        }
+      });
+
+      return () => {
+        subscription?.unsubscribe();
+      };
+    } catch (error) {
+      console.error('Supabase initialization error:', error);
       setIsLoading(false);
-    });
-
-    // Listen for auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      
-      // Handle auth state changes
-      if (session) {
-        if (pathname === '/auth') {
-          router.push('/dashboard');
-        }
-      } else {
-        if (pathname.startsWith('/dashboard')) {
-          router.push('/auth');
-        }
-      }
-    });
-
-    return () => subscription.unsubscribe();
+    }
   }, [router, pathname]);
 
   return (
